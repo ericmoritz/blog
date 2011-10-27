@@ -26,7 +26,12 @@ DEFAULT_PAGINATION = 20
 THEME = "themes/crisp"
 
 DEFAULT_METADATA = [
-    ("author", "Eric Moritz")
-    ]
+    ("description", "The blog of Eric Moritz"),
+    ("google-site-verification", "8mRgPV6uVx5qdEcoZekq0h5h1UnHkCe3QTMwxWTYru8"),
+]
+LINK_RELS = [
+    {"rel": "openid.server", "href": "http://www.myopenid.com/server"},
+    {"rel": "openid.delegate", "href": "http://eric.moritz.myopenid.com"}
+]
 
 GRAVATAR_HASH = "4839d0678248e68eaeed5084e788210b"
