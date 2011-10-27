@@ -198,89 +198,15 @@ table { border-collapse: collapse; border-spacing: 0; }
 
 /* =============================================================================
    Primary styles
-   Author: 
+   Author: Eric Moritz
    ========================================================================== */
-
-
-
-
-
-
-
-
-/* =============================================================================
-   Non-semantic helper classes
-   Please define your styles before this section.
-   ========================================================================== */
-
-/* For image replacement */
-.ir { display: block; text-indent: -999em; overflow: hidden; background-repeat: no-repeat; text-align: left; direction: ltr; }
-.ir br { display: none; }
-
-/* Hide for both screenreaders and browsers:
-   css-discuss.incutio.com/wiki/Screenreader_Visibility */
-.hidden { display: none; visibility: hidden; }
-
-/* Hide only visually, but have it available for screenreaders: by Jon Neal.
-  www.webaim.org/techniques/css/invisiblecontent/  &  j.mp/visuallyhidden */
-.visuallyhidden { border: 0; clip: rect(0 0 0 0); height: 1px; margin: -1px; overflow: hidden; padding: 0; position: absolute; width: 1px; }
-
-/* Extends the .visuallyhidden class to allow the element to be focusable when navigated to via the keyboard: drupal.org/node/897638 */
-.visuallyhidden.focusable:active, .visuallyhidden.focusable:focus { clip: auto; height: auto; margin: 0; overflow: visible; position: static; width: auto; }
-
-/* Hide visually and from screenreaders, but maintain layout */
-.invisible { visibility: hidden; }
-
-/* Contain floats: nicolasgallagher.com/micro-clearfix-hack/ */ 
-.clearfix:before, .clearfix:after { content: ""; display: table; }
-.clearfix:after { clear: both; }
-.clearfix { zoom: 1; }
-
-
-
-/* =============================================================================
-   PLACEHOLDER Media Queries for Responsive Design.
-   These override the primary ('mobile first') styles
-   Modify as content requires.
-   ========================================================================== */
-
-@media only screen and (min-width: 480px) {
-  /* Style adjustments for viewports 480px and over go here */
-
-}
-
-@media only screen and (min-width: 768px) {
-  /* Style adjustments for viewports 768px and over go here */
-
-}
-
-
-/* =============================================================================
-   Print styles.
-   Inlined to avoid required HTTP connection: www.phpied.com/delay-loading-your-print-css/
-   ========================================================================== */
- 
-@media print {
-  * { background: transparent !important; color: black !important; text-shadow: none !important; filter:none !important; -ms-filter: none !important; } /* Black prints faster: sanbeiji.com/archives/953 */
-  a, a:visited { color: #444 !important; text-decoration: underline; }
-  a[href]:after { content: " (" attr(href) ")"; }
-  abbr[title]:after { content: " (" attr(title) ")"; }
-  .ir a:after, a[href^="javascript:"]:after, a[href^="#"]:after { content: ""; }  /* Don't show links for images, or javascript/internal links */
-  pre, blockquote { border: 1px solid #999; page-break-inside: avoid; }
-  thead { display: table-header-group; } /* css-discuss.incutio.com/wiki/Printing_Tables */
-  tr, img { page-break-inside: avoid; }
-  img { max-width: 100% !important; }
-  @page { margin: 0.5cm; }
-  p, h2, h3 { orphans: 3; widows: 3; }
-  h2, h3{ page-break-after: avoid; }
-}
 
 body {
   background-color: #DDD;
   color: #333;
   margin: 0;
-  padding: 0 0 120px;
-  font-family: ff-tisa-web-pro, georgia, 'Helvetica Neue', sans-serif;
+  padding: 0;
+  font-family: "Arvo", serif;
   text-rendering: optimizeLegibility;
   font-size: 16px;
   line-height: 25px;
@@ -296,9 +222,10 @@ h2, h3, h4, h5, h6 {
   line-height: 30px;
   text-transform: uppercase;
   letter-spacing: 2px;
-  font-weight: bold;
-  font-family: futura-pt;
-  }
+  font-weight: 700;
+  font-family: sans-serif;
+  text-shadow:1px 1px 2px #B8B8B8
+}
   
 h2 a {
   background: none;
@@ -328,11 +255,12 @@ blockquote {
 header#banner {
    background-color: black;
    text-align: center;
-   margin-bottom: 10px;
+   margin-bottom: 5px;
 }
 
-header.body {
-   font-size: 12px!important;
+header.body, header.body h1 {
+   font-size: 10px!important;
+   color: #555;
    margin: 0px;
 }
 
@@ -341,22 +269,17 @@ header.body nav {
 }
 
 header.body a {
-   font-size: 12px!important;
    color: white;
    text-decoration: none;
    text-transform: uppercase;
-}
-
-header.body a.active {
-   color: #03B2D1;
 }
 
 h2#page-title {
    text-align: left;
 }
 
-section#content {
-   padding: 10px;
+section#page-content {
+   padding: 0px 5px;
 }
 
 .white-box {
@@ -364,8 +287,9 @@ section#content {
    -moz-border-radius: 5px;
    background-color: white;
    padding: 10px;
-   margin: 20px;
+   margin-bottom: 5px;
 }
+
 
 #post-list {
    list-style: none;
@@ -373,13 +297,30 @@ section#content {
    margin: 0px;
 }
 
-footer#contentinfo {
+#post-list li {
+   display: block;
+   margin: 0px;
+   padding: 0px;
+   list-style: none;
+}
+
+footer.body {
    font-size: 10px;
+   text-align: center;
    font-style: italic;
 }
 
 .post-info {
-   display: none;
+   font-size: 10px;
+   text-transform: uppercase;
+}
+
+.post-info .author {
+   font-weight: 700;
+}
+
+.post-info address {
+   display: inline;
 }
 
 .entry-title {
@@ -396,6 +337,14 @@ footer#contentinfo {
    height: 1.5em;
    vertical-align: middle;
 }
+
+a { color: #333; }
+a:visited { color: #333; }
+a:focus { outline: thin dotted; color: #03B2D1; }
+
+/* Improve readability when focused and hovered in all browsers: people.opera.com/patrickl/experiments/keyboard/test */
+header.body a:hover, a:hover, a:active { outline: 0; color: #03B2D1;}
+
 
 .highlight .hll { background-color: #ffffcc }
 .highlight  { background: #f0f0f0; }
@@ -459,3 +408,95 @@ footer#contentinfo {
 .highlight .vg { color: #bb60d5 } /* Name.Variable.Global */
 .highlight .vi { color: #bb60d5 } /* Name.Variable.Instance */
 .highlight .il { color: #40a070 } /* Literal.Number.Integer.Long */
+
+
+
+
+
+
+
+
+/* =============================================================================
+   Non-semantic helper classes
+   Please define your styles before this section.
+   ========================================================================== */
+
+/* For image replacement */
+.ir { display: block; text-indent: -999em; overflow: hidden; background-repeat: no-repeat; text-align: left; direction: ltr; }
+.ir br { display: none; }
+
+/* Hide for both screenreaders and browsers:
+   css-discuss.incutio.com/wiki/Screenreader_Visibility */
+.hidden { display: none; visibility: hidden; }
+
+/* Hide only visually, but have it available for screenreaders: by Jon Neal.
+  www.webaim.org/techniques/css/invisiblecontent/  &  j.mp/visuallyhidden */
+.visuallyhidden { border: 0; clip: rect(0 0 0 0); height: 1px; margin: -1px; overflow: hidden; padding: 0; position: absolute; width: 1px; }
+
+/* Extends the .visuallyhidden class to allow the element to be focusable when navigated to via the keyboard: drupal.org/node/897638 */
+.visuallyhidden.focusable:active, .visuallyhidden.focusable:focus { clip: auto; height: auto; margin: 0; overflow: visible; position: static; width: auto; }
+
+/* Hide visually and from screenreaders, but maintain layout */
+.invisible { visibility: hidden; }
+
+/* Contain floats: nicolasgallagher.com/micro-clearfix-hack/ */ 
+.clearfix:before, .clearfix:after { content: ""; display: table; }
+.clearfix:after { clear: both; }
+.clearfix { zoom: 1; }
+
+
+
+/* =============================================================================
+   PLACEHOLDER Media Queries for Responsive Design.
+   These override the primary ('mobile first') styles
+   Modify as content requires.
+   ========================================================================== */
+
+@media only screen and (min-width: 480px) {
+  /* Style adjustments for viewports 480px and less */
+
+  header.body, header.body h1 {
+     font-size: 12px!important;
+     margin: 0px;
+  }
+
+}
+
+@media only screen and (min-width: 768px) {
+  /* Style adjustments for viewports 768px and over go here */
+
+  header#banner {
+     margin-bottom: 30px;
+  }
+
+  section#page-content {
+    padding: 0px 30px;
+  }
+
+  .white-box {
+     display: block;
+     margin-bottom: 30px;
+  }
+
+}
+
+
+/* =============================================================================
+   Print styles.
+   Inlined to avoid required HTTP connection: www.phpied.com/delay-loading-your-print-css/
+   ========================================================================== */
+ 
+@media print {
+  * { background: transparent !important; color: black !important; text-shadow: none !important; filter:none !important; -ms-filter: none !important; } /* Black prints faster: sanbeiji.com/archives/953 */
+  a, a:visited { color: #444 !important; text-decoration: underline; }
+  a[href]:after { content: " (" attr(href) ")"; }
+  abbr[title]:after { content: " (" attr(title) ")"; }
+  .ir a:after, a[href^="javascript:"]:after, a[href^="#"]:after { content: ""; }  /* Don't show links for images, or javascript/internal links */
+  pre, blockquote { border: 1px solid #999; page-break-inside: avoid; }
+  thead { display: table-header-group; } /* css-discuss.incutio.com/wiki/Printing_Tables */
+  tr, img { page-break-inside: avoid; }
+  img { max-width: 100% !important; }
+  @page { margin: 0.5cm; }
+  p, h2, h3 { orphans: 3; widows: 3; }
+  h2, h3{ page-break-after: avoid; }
+}

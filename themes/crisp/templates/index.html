@@ -3,18 +3,14 @@
 <section id="content">
 {% block content_title %}{% endblock %}
 
-
-
 {% for article in articles_page.object_list %}  
 <ol id="post-list">
         <li><article class="hentry white-box">    
                 <header> <h2 class="entry-title"><a href="{{ SITEURL }}/{{ article.url }}" rel="bookmark" title="Permalink to {{ article.title}}">{{ article.title }}</a></h2> </header>
-                <footer class="post-info">
-                    <abbr class="published" title="{{ article.date.isoformat() }}"> {{ article.locale_date }} </abbr>
-                    {% if article.author %}<address class="vcard author">By <a class="url fn" href="{{ SITEURL }}/author/{{ article.author }}.html">{{ article.author }}</a></address>{% endif %}
-                </footer><!-- /.post-info -->
-                {# First item #}
                 <div class="entry-content"> {{ article.summary }} </div><!-- /.entry-content -->                
+                {% include "post-info.html" %}
+                </footer><!-- /.post-info -->
+
         </article></li>
 {% endfor %}
 </ol><!-- /#posts-list -->
