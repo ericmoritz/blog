@@ -1,6 +1,5 @@
 rm -rf code/env
 cd code/
-virtualenv --no-site-packages env
 . env/bin/activate
 
 pip install markdown
