@@ -1,4 +1,5 @@
-rm -rf code/env
+rm -rf code/
+virtualenv --no-site-packages code/env
 cd code/
 . env/bin/activate
 
