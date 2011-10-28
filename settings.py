@@ -15,7 +15,6 @@ TWITTER_USERNAME = "ericmoritz"
 
 MENUITEMS =[ 
     ("github", "https://github.com/ericmoritz/"),
-    ("gist.github", "https://gist.github.com/ericmoritz/"),
     ("Google+", "https://plus.google.com/111783618530459182533/"),
     ("Twitter", "https://twitter.com/ericmoritz"),
 ]
