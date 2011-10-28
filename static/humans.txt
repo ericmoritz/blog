@@ -1,0 +1,12 @@
+/* the humans responsible & colophon */
+/* humanstxt.org */
+
+/* TEAM */
+  Eric Moritz
+  Twitter: ericmoritz
+  Location: Knoxville, TN
+
+/* SITE */
+  Standards: HTML5, CSS3
+  Components: Modernizr, jQuery
+  Software: Pelican, Python, Nginx
