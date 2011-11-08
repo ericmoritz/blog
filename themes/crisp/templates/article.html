@@ -2,6 +2,14 @@
 
 {% block title %}{{ SITENAME }} - {{ article.title }}{% endblock %}
 
+{% block head %}
+    {{ super() }}
+    <meta property="og:title" content="{{ article.title }}"/>
+    <meta property="og:type" content="article"/>
+    <meta property="og:type" content="onemoreblog:article"/>
+    <meta property="og:description" content="{{ article.summary|striptags }}" />
+{% endblock %}
+
 {% block content %}        
 <section id="content" class="body white-box">    
         <header> <h2 class="entry-title"><a href="{{ pagename }}" rel="bookmark" title="Permalink to {{ article.title}}">{{ article.title }}</a></h2> </header>
