@@ -76,8 +76,12 @@ Before you know it, you will be done with this book, thinking like a
 computer scientist and all the while having a lot of fun in the
 process.
 
+**Update:** The [Hacker News discussion](http://news.ycombinator.com/item?id=3595599) about this article provides a number of
+alternative books to my list.  
+
 # Book Links
 
 * [C Programming Language](http://amzn.to/zUOn2s)
 * [Mastering Algorithms in C](http://amzn.to/yIiWbR)
 * [The Little Schemer](http://amzn.to/z2FOF7)
+
