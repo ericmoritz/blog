@@ -59,7 +59,7 @@ After you have a grasp of basic data structures, it is time to visit
 the book that had a significant impact on the way I solve harder
 problems.  This modest, but potent book is [The Little
 Schemer](http://amzn.to/z2FOF7).  In the world of computer books it's
-nearly a pamphlet at 195 pages, but just like it's language of choice,
+nearly a pamphlet at 195 pages, but just like its language of choice,
 Scheme, it concise and powerful.
 
 This book is a step-by-step guide on how to think like a computer
@@ -67,8 +67,8 @@ scientist.  A step-by-step guide may sound dry and boring but this
 book is surprisingly full of humor.  I believe the authors took a page
 from Douglas Adams and Monty Python when they wrote this book.
 
-The beauty about this book is not just it's humor.  The beauty is in
-it's compounding process of teaching hard problems by starting with a
+The beauty about this book is not just its humor.  The beauty is in
+its compounding process of teaching hard problems by starting with a
 simple idea and then building on that idea to lead you step-by-step
 onto more complex, abstract algorithms.
 
