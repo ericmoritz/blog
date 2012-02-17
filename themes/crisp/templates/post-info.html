@@ -18,7 +18,7 @@
                     <span class="entry-summary" itemprop="description" style="display:none">{{ article.summary|striptags }}</span>
 
                   <div>
-                    <abbr class="published" title="{{ article.date.isoformat() }}"  datetime="{{ article.date.isoformat() }}" itemprop="dateCreated"> {{ article.locale_date }} </abbr>
+                    <time class="published" title="{{ article.date.isoformat() }}" datetime="{{ article.date.isoformat() }}" itemprop="dateCreated">{{ article.locale_date }}</time>
                   </div>
 
                 </footer>
