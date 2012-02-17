@@ -46,7 +46,7 @@
                   {% if p.url %}
                    <a{% if p == page %} class="active"{% endif %} href="{{ SITEURL }}/pages/{{ p.url }}">{{ p.title }}</a>
                   {% else %}
-                    <a href="{{ p.1 }}">{{ p.0 }}</a>
+                    <a href="{{ p.1.href }}"{% if p.1.rel %} rel="{{p.1.rel }}"{% endif %}>{{ p.0 }}</a>
                   {% endif %}
                 {% endfor %}
         

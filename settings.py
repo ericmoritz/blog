@@ -14,9 +14,9 @@ GOOGLE_ANALYTICS = "UA-75939-1"
 TWITTER_USERNAME = "ericmoritz"
 
 MENUITEMS =[ 
-    ("github", "https://github.com/ericmoritz/"),
-    ("Google+", "https://plus.google.com/111783618530459182533/"),
-    ("Twitter", "https://twitter.com/ericmoritz"),
+    ("github", {"href": "https://github.com/ericmoritz/"}),
+    ("Google+",{"href": "https://plus.google.com/111783618530459182533/", "rel": "author"}),
+    ("Twitter",{"href": "https://twitter.com/ericmoritz"}),
 ]
 
 WITH_PAGINATION = True
