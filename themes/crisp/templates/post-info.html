@@ -1,6 +1,8 @@
                 <footer class="post-info">
                   {% if article.author %}
-                  <address class="vcard author"><a class="url fn" href="{{ SITEURL }}/author/{{ article.author }}.html" itemprop="creator">{{ article.author }}</a></address>
+                  <address itemprop="creator" itemscope itemtype="http://schema.org/Person" class="vcard author">
+                    <a class="url fn" href="{{ SITEURL }}/author/{{ article.author }}.html">
+                      <span itemprop="name">{{ article.author }}</span></a></address>
                   {% endif %}
 
                   {% if article.author and article.tags %}<span>:</span>{% endif %}
@@ -10,10 +12,13 @@
                     <span>/</span>
                     {% endif %}
 
-                    <a href="{{ SITEURL }}/tag/{{ tag }}.html" itemprop="articleSection">{{ tag }}</a>
+                    <a href="{{ SITEURL }}/tag/{{ tag }}.html"> <span itemprop="articleSection">{{ tag }}</span></a>
                     {% endfor %}
 
-                    <span class="article-description" itemprop="description" style="display:none">{{ article.summary|striptags }}</span>
+                    <span class="entry-summary" itemprop="description" style="display:none">{{ article.summary|striptags }}</span>
+
                   <div>
                     <abbr class="published" title="{{ article.date.isoformat() }}"  datetime="{{ article.date.isoformat() }}" itemprop="dateCreated"> {{ article.locale_date }} </abbr>
                   </div>
+
+                </footer>
