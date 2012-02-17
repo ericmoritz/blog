@@ -1,6 +1,6 @@
                 <footer class="post-info">
                   {% if article.author %}
-                  <address class="vcard author"><a class="url fn" href="{{ SITEURL }}/author/{{ article.author }}.html">{{ article.author }}</a></address>
+                  <address class="vcard author"><a class="url fn" href="{{ SITEURL }}/author/{{ article.author }}.html" itemprop="creator">{{ article.author }}</a></address>
                   {% endif %}
 
                   {% if article.author and article.tags %}<span>:</span>{% endif %}
@@ -10,9 +10,10 @@
                     <span>/</span>
                     {% endif %}
 
-                    <a href="{{ SITEURL }}/tag/{{ tag }}.html">{{ tag }}</a>
+                    <a href="{{ SITEURL }}/tag/{{ tag }}.html" itemprop="articleSection">{{ tag }}</a>
                     {% endfor %}
 
+                    <span class="article-description" itemprop="description" style="display:none">{{ article.summary|striptags }}</span>
                   <div>
-                    <abbr class="published" title="{{ article.date.isoformat() }}"> {{ article.locale_date }} </abbr>
+                    <abbr class="published" title="{{ article.date.isoformat() }}"  datetime="{{ article.date.isoformat() }}" itemprop="dateCreated"> {{ article.locale_date }} </abbr>
                   </div>

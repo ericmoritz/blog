@@ -10,9 +10,10 @@
 {% endblock %}
 
 {% block content %}        
-<section id="content" class="body white-box">    
-        <header> <h2 class="entry-title"><a href="{{ pagename }}" rel="bookmark" title="Permalink to {{ article.title}}">{{ article.title }}</a></h2> </header>
-        <div class="entry-content">
+<section id="content" class="body white-box" itemscope itemtype="http://schema.org/BlogPosting">
+        <header> <h2 class="entry-title"><a href="{{ pagename }}"
+        rel="bookmark" title="Permalink to {{ article.title}}" itemprop="name">{{ article.title }}</a></h2> </header>
+        <div class="entry-content" itemprop="articleBody">
         {{ article.content }}
         {% include "post-info.html" %}
         </div><!-- /.entry-content -->
