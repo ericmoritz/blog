@@ -60,7 +60,7 @@ the book that had a significant impact on the way I solve harder
 problems.  This modest, but potent book is [The Little
 Schemer](http://amzn.to/z2FOF7).  In the world of computer books it's
 nearly a pamphlet at 195 pages, but just like its language of choice,
-Scheme, it concise and powerful.
+Scheme, it is concise and powerful.
 
 This book is a step-by-step guide on how to think like a computer
 scientist.  A step-by-step guide may sound dry and boring but this
