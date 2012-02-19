@@ -1,3 +1,4 @@
+VERSION = "1"
 AUTHOR = "Eric Moritz"
 SITENAME = "Eric Moritz"
 CATEGORY_FEED_RSS = "feeds/category/%s.rss.xml"
@@ -35,3 +36,5 @@ LINK_RELS = [
 
 GRAVATAR_HASH = "4839d0678248e68eaeed5084e788210b"
 DISQUS_SITENAME = "ericmoritz"
+
+CSS_FILE = "main.css?v=" + VERSION
