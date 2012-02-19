@@ -1,20 +1,13 @@
 import csv
-import config
-from fake_redis import StrictRedis
+from redis import StrictRedis
 
 reader = csv.reader(open("./presidents.csv"))
 header = reader.next()
 
 client = StrictRedis()
 
-
-for i, row in enumerate(reader):
+for row in reader:
     key = "president:%s" % (row[0], )
     doc = dict(zip(header, row))
 
-    # simulate a disconnect every 3 operations
-    if i % 3 == 0:
-        client.disconnect()
-
     client.set(key, doc)
-
