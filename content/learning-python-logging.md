@@ -26,7 +26,7 @@ That is basically it.  That code will create a logger based on the
 module's fully qualified name. So if we have a module called
 mypackage.module1.module2.  That will be the logger's name.
 
-Keep in mind that `__name__` could be the string `"\_\_main\_\_"` if
+Keep in mind that `__name__` could be the string `"__main__"` if
 your Python file is ran as a script.  Other than that, that is all you
 need to do.
 
