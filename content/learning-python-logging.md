@@ -1,7 +1,6 @@
 Title: Learning Python Logging
 Date: 2012-02-17 17:46:00
 Tags: python, logging
-Status: draft
 
 The Python logging module is often a source of confusion with
 developers.  Often logging is the final thought in a project. When we
