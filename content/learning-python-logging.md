@@ -11,7 +11,12 @@ documentation](http://docs.python.org/library/logging.html) to figure
 logging out. It is a perpetual cycle that results in some very bad
 code.
 
-# How modules should use Python logging
+I am going to assume that you have some familiarity with the Python
+logging module and the concept of logging levels, so I will only
+address concepts with the logging module that has been a source of
+confusion in colleagues.
+
+# How Python logging should be used in modules
 
 The first source of confusion with the Python logging module is the
 question of how to create a logger.  This is probably the easiest part
@@ -24,9 +29,9 @@ of Python logging.  Here's how you do it:
 
 That is basically it.  That code will create a logger based on the
 module's fully qualified name. So if we have a module called
-mypackage.module1.module2.  That will be the logger's name.
+`mypackage.module1.module2`, that will be the logger's name.
 
-Keep in mind that `__name__` could be the string `"__main__"` if
+Keep in mind that `__name__` is the string `"__main__"` if
 your Python file is ran as a script.  Other than that, that is all you
 need to do.
 
@@ -98,7 +103,7 @@ configuration is an application level configuration?
 
 Here is an hypothetical script that uses a Redis connection.
 
-import_presidents1.py:
+[import_presidents1.py](https://github.com/ericmoritz/blog/blob/master/example-code/learn-python-logging/import_presidents1.py):
 
     :::python
 
@@ -117,16 +122,18 @@ import_presidents1.py:
         client.set(key, doc)
     
 
+
 Now, let us assume that the redis module used a "redis.connection"
 logger that logs a DEBUG level message whenever the redis client needs
-to reconnect to the server.
+to reconnect to the server. Here is a [mock Redis client](https://github.com/ericmoritz/blog/blob/master/example-code/learn-python-logging/redis.py)
+for this example.
 
 When we run the code as it is, no connection messages will be printed.
 
 Now, let us say our connection is flaky and we have to reconnect to
-Redis:
+Redis often:
 
-import_presidents2.py:
+[import_presidents2.py](https://github.com/ericmoritz/blog/blob/master/example-code/learn-python-logging/import_presidents2.py):
 
     :::python
 
@@ -148,12 +155,10 @@ import_presidents2.py:
     
         client.set(key, doc)
     
-    
-
 We can configure the "redis.connection" logger to output the
 connection messages by configuring our script like so:
 
-import_presidents3.py:
+[import_presidents3.py](https://github.com/ericmoritz/blog/blob/master/example-code/learn-python-logging/import_presidents3.py):
 
     :::python
 
@@ -180,18 +185,24 @@ import_presidents3.py:
         client.set(key, doc)
     
 
-For that script, we could of probably replaced:
+For simplicity, we could of replaced:
 
     :::python
 
     logging.basicConfig()
     logging.getLogger("redis.connection").setLevel(logging.DEBUG)
  
-With:
+with:
 
     :::python
 
     logging.basicConfig(level=logging.DEBUG)
+
+
+[logging.basicConfig()](http://docs.python.org/library/logging.html#logging.basicConfig)
+is a really handy function.  I find myself using `basicConfig()` often
+because most of the time I simply want to output to `stderr` or to a
+single file rather than wanting complex routing using Handlers.
 
 # What are Handlers and Formatters?
 
@@ -214,7 +225,7 @@ LogRecord. That's pretty much it.
 Let us change our presidential import script to log any exceptions
 that occur when importing:
                                        
-import_presidents4.py:
+[import_presidents4.py](https://github.com/ericmoritz/blog/blob/master/example-code/learn-python-logging/import_presidents4.py):
 
     :::python
 
@@ -249,12 +260,12 @@ import_presidents4.py:
         log.exception("dang it.")
     
 
-notice that we added "import config", this will let us separate
-configuration from implementation.  for our little one-off script,
+Notice that we added "import config", this will let us separate
+configuration from implementation.  For our little one-off script,
 having a config.py module is overkill and only exists to prove a
 point.
 
-here's the contents of config.py:
+Here's the contents of [config.py](https://github.com/ericmoritz/blog/blob/master/example-code/learn-python-logging/config.py):
 
     :::python
 
@@ -286,7 +297,7 @@ Here is an example by combining all the examples we have seen.  We
 want to output INFO level messages to stderr and EXCEPTION level
 messages to a \`pwd\`/error.log
 
-logging.ini:
+[logging.ini](https://github.com/ericmoritz/blog/blob/master/example-code/learn-python-logging/logging.ini):
 
     :::ini
 
@@ -322,7 +333,7 @@ logging.ini:
 
 To use this file, let us modify our config.py.
 
-config_ini.py:
+[config_ini.py](https://github.com/ericmoritz/blog/blob/master/example-code/learn-python-logging/config_ini.py):
 
     :::python
 
@@ -335,7 +346,7 @@ config_ini.py:
 
 Finally, here's the updated import script:
 
-import_presidents5.py:
+[import_presidents5.py](https://github.com/ericmoritz/blog/blob/master/example-code/learn-python-logging/import_presidents5.py):
 
     import config_ini
     import logging
@@ -374,12 +385,12 @@ using a dictionary or with Python code.  It is up to you.
 
 There we have it. Python 2's built-in logging module is one of those
 warts of the standard library that goes against the "Zen of Python"
-but once you learn the non-obvious way the designers intended it to be
-use it becomes simple.
+but once you learn the non-obvious way the designers intended to be
+used it becomes simple.
 
 I hope this helps clear up Python's logging module for you.
 
 Links
 
-* [Same Code](https://github.com/ericmoritz/blog/tree/master/example-code/learn-python-logging)
-
+* [Example Code](https://github.com/ericmoritz/blog/tree/master/example-code/learn-python-logging)
+* [Hacker News Discussion](http://news.ycombinator.com/#todo)
