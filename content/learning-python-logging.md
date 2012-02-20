@@ -77,8 +77,8 @@ Let us say that there are the following loggers used in our application:
 * myapp.models.questions
 * myapp.models.articles
 
-If we only wanted connection errors from Redis and MySQL, query debug
-information from MySQL and warnings from myapp's models, we could
+If we only wanted connection errors from our databases, query debug
+information from MySQL, and warnings from myapp's models; we could
 configure it as so:
 
     :::python
@@ -97,11 +97,11 @@ set the "myapp.models" logger to WARNING.
 
 I just showed you how to configure the level of a logger
 pragmatically. Where should that code exist?  If you answered, "In the
-module", I want you to get up, find the nearest blunt object and hit
+module", I want you to get up, find the nearest blunt object, and hit
 yourself with it. Do you not remember me saying that logging
 configuration is an application level configuration?
 
-Here is an hypothetical script that uses a Redis connection.
+Here is a hypothetical script that uses a Redis connection.
 
 [import_presidents1.py](https://github.com/ericmoritz/blog/blob/master/example-code/learn-python-logging/import_presidents1.py):
 
@@ -121,7 +121,6 @@ Here is an hypothetical script that uses a Redis connection.
     
         client.set(key, doc)
     
-
 
 Now, let us assume that the redis module used a "redis.connection"
 logger that logs a DEBUG level message whenever the redis client needs
@@ -222,6 +221,9 @@ sockets, what have you.
 A Formatter is exactly what it sounds like.  It formats a
 LogRecord. That's pretty much it.
 
+A Filter filters a LogRecord.  I have never needed one, so I will let
+you define your own use case for one.
+
 Let us change our presidential import script to log any exceptions
 that occur when importing:
                                        
@@ -293,9 +295,8 @@ the
 [logging.config.fileConfig](http://docs.python.org/library/logging.config.html#logging.config.fileConfig)
 to configure the loggers using an INI file.
 
-Here is an example by combining all the examples we have seen.  We
-want to output INFO level messages to stderr and EXCEPTION level
-messages to a \`pwd\`/error.log
+Here is the equivalent INI file for the configuration we previously
+described using Python code:
 
 [logging.ini](https://github.com/ericmoritz/blog/blob/master/example-code/learn-python-logging/logging.ini):
 
