@@ -183,7 +183,7 @@ connection messages by configuring our script like so:
         client.set(key, doc)
     
 
-For simplicity, we could of replaced:
+For simplicity, we could have replaced:
 
     :::python
 
