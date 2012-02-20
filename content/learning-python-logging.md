@@ -393,4 +393,4 @@ I hope this helps clear up Python's logging module for you.
 Links
 
 * [Example Code](https://github.com/ericmoritz/blog/tree/master/example-code/learn-python-logging)
-* [Hacker News Discussion](http://news.ycombinator.com/#todo)
+* [Hacker News Discussion](http://news.ycombinator.com/item?id=3612786)
