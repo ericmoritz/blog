@@ -44,13 +44,13 @@ people](https://github.com/ericmoritz/wsdemo/blob/v2/AUTHORS)
  
 I [automated the
 test](https://github.com/ericmoritz/wsdemo/blob/master/README.md) to
-make it easier to benchmark the 19 servers the composed the test.
+make it easier to benchmark the 19 servers that composed the test.
 
-After many small scale benchmarks on AWS amidst data-center failures I
-found that even a multi-core EC2 instance performed in a similar
-peculiar manor with a majority of the servers.  I decided that I
-needed actual hardware so I picked up a AMD Phenom 9600 Quad Core -
-2300 mhz with 2GB of Memory off a Craigslist to compare the results.
+After many small scale benchmarks on AWS amidst data-center failures,
+I found that even a multi-core EC2 instance performed in a similarly
+with a majority of the servers.  I decided that I needed actual
+hardware so I picked up a AMD Phenom 9600 Quad Core - 2300 mhz with
+2GB of Memory off a Craigslist to compare the results.
 
 ## Methodology
 
@@ -60,7 +60,7 @@ Each server needed to accept a connection and echo back every message
 that is sent to it.  The benchmark process created a connection as
 fast as the server would allow and each client connection would send a
 33 byte WebSocket message every second (33 bytes is how large a binary
-encoded ref() value is in Erlang)  Connection initiation, Websocket
+encoded ref() value is).  Connection initiation, WebSocket
 Handshakes, Message send, Message receive and any error was recorded
 in a leveldb event log on the client with a timestamp.
 
@@ -724,8 +724,9 @@ If you look at the box plots of the EC2:
 ![EC2 handshake times box plot](wsdemo-results/v2/m1.large-c10k-handshake-times-box.png)
 ![EC2 latency times box plot](wsdemo-results/v2/m1.large-c10k-latency-box.png)
 
-You will notice that while Erlang did the best, 5% of the messages
-sent were >1.3 seconds which is likely unacceptable.
+You will notice that while Erlang did the best, but 5% of the messages
+sent were >1.3 seconds which is likely unacceptable.  It is a
+bitter-sweet victory for Erlang on EC2.
 
 On my local hardware, all the servers did ridiculously better: 
 
@@ -737,17 +738,25 @@ to time and consistency.
 
 ## My Conclusion
 
-If you are deploying something on EC2 you will likely need to load
-balance your service to reach c10k on any of these servers.  Even the
-leader in the EC2 benchmark (Erlang) reached what is probably
-unacceptable message latencies of > 1 second.
+This test shows the baseline overhead of the servers at ten thousand
+concurrent client connections.  On physical hardware, save a few
+outliers, the frameworks did comparably well. 
 
+Testing these on EC2 on the other hand, the story is much different.
+All of the servers had wide deviations from the median. You will need
+to load balance your service in order to reach c10k on a m1.large EC2
+instance. A single node using any platform will have trouble reaching
+c10k on a m1.large instance. Even the leader in the EC2 benchmark
+(Erlang) reached unacceptable message latencies of > 1 second.  I am
+sure that there exists a instance type in EC2 that able to hit c10k on
+a single node but they will cost more than I am willing to spend on
+this test.
 
-
-It just goes to show you that you must test your assumptions and do
-some capacity planning.  Hacking together a quick node.js prototype to
-throw on EC2 to show the boss how viable it is will likely end in pain
-(and maybe your job).
+The moral of this story is that you must test your assumptions and do
+some capacity planning.  If you're tempted to stick that node.js
+prototype up on EC2 without load testing to show your boss that
+node.js scales; you are likely to have egg on your face and be out of
+a job.
 
 ## Code, Charts, Stats and Raw data
 
@@ -761,3 +770,24 @@ you really plan on using it.
 * [Detailed Local charts](wsdemo-results/v2/results-moritz-server-c10k-v2.pdf)
 * [Local CSV Tables 1.19 gigs compressed](https://www.dropbox.com/s/y6lf5x06kgp6a7k/moritz-server-c10k.tar.bz2)
 * [wsdemo code](https://github.com/ericmoritz/wsdemo/tree/v2)
+
+## Plea for support
+
+I used Amazon affiliate fees earned through my [Books Every
+Self-Taught Computer Scientist Should Read
+post](http://eric.themoritzfamily.com/books-every-self-taught-computer-scientist-should-read.html)
+to fund this project.  The server I bought off craigslist and the cost
+of the numerous EC2 instances spun up for this test were all made
+possible through those funds.  If you are in the market for any of
+these books, I would appreciate the kick-back.  You get a book, I get
+some money and it only cuts into Amazon's bottom-line (which is a
+really large line).
+
+I only recommend books that I have actually read and enjoyed. I hope
+to put the money to good use. (I think a [Raspberry PI powered FAWN
+cluster](http://www.cs.cmu.edu/~fawnproj/) written in Erlang is next
+but no promises)
+
+ * [Programming Erlang: Software for a Concurrent World](http://www.amazon.com/gp/product/193435600X/ref=as_li_ss_tl?ie=UTF8&camp=1789&creative=390957&creativeASIN=193435600X&linkCode=as2&tag=erimor-20)
+ * [Erlang and OTP in Action](http://www.amazon.com/gp/product/1933988789/ref=as_li_ss_tl?ie=UTF8&camp=1789&creative=390957&creativeASIN=1933988789&linkCode=as2&tag=erimor-20)
+
