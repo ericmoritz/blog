@@ -1,7 +1,6 @@
 Title: Websocket Demo Results V2
 Date: 2012-07-18 18:01:00
 Tags: erlang, websockets, c10k, node, nodejs
-Status: draft
 
 <style>
   tr {
