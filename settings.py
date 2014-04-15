@@ -5,10 +5,10 @@ CATEGORY_FEED_RSS = "feeds/category/%s.rss.xml"
 
 DEFAULT_CATEGORY = "blog"
 
-FEED = "feeds/index.atom.xml"
+FEED_ATOM = "feeds/index.atom.xml"
 FEED_RSS = "feeds/index.rss.xml"
 
-TAG_FEED = "feeds/tags/%s.atom.xml"
+TAG_FEED_ATOM = "feeds/tags/%s.atom.xml"
 TAG_FEED_RSS = "feeds/tags/%s.rss.xml"
 
 GOOGLE_ANALYTICS = "UA-75939-1"
