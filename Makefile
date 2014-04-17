@@ -1,3 +1,9 @@
+.PHONY: all deps build
+
+all: deps build
+
+deps:
+	pip install -r requirements.txt
 
 build:
 	rm -rf output/*

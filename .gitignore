@@ -1,1 +1,6 @@
 output/*
+.blog-venv
+build/
+*~
+*.pyc
+.blog-env/
