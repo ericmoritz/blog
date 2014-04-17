@@ -1,7 +1,6 @@
 Title: Easy ETL with RDF and Python
 Date: 2014-04-15 00:00:00
 Tags: RDF, ETL, pragmatic-rdf
-Status: draft
 
 So I have been tasked with optimizing our deployment pipeline.  It is
 pretty obvious to us where the bottlenecks are but trying to be a data

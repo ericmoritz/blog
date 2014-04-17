@@ -3,3 +3,4 @@ output/*
 build/
 *~
 *.pyc
+.blog-env/
