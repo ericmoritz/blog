@@ -10,3 +10,4 @@ pelican==3.3
 pytz==2014.2
 six==1.6.1
 wsgiref==0.1.2
+boto==2.27.0
