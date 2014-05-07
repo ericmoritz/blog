@@ -11,5 +11,4 @@ build:
 	cp -R static/* output/
 
 deploy:
-	rsync -r -av output/ eric@themoritzfamily.com:/var/www/servers/eric.themoritzfamily.com/static
 	s3put --p $(pwd)/output/ --bucket eric.themoritzfamily.com -g public-read output
