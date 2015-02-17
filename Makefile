@@ -11,4 +11,4 @@ build:
 	cp -R static/* output/
 
 deploy:
-	s3put --p $(pwd)/output/ --bucket eric.themoritzfamily.com -g public-read output
+	s3put --p `pwd`/output/ --bucket eric.themoritzfamily.com -g public-read output
