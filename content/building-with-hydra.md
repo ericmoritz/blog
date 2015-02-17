@@ -5,114 +5,135 @@ Status: draft
 
 For the past year or so I've challenged myself to research a better
 way to build RESTful services. The approach we've taken in the past
-has led to tightly coupled clients that we have to hardcode the
-knowledged of how to construct a URL to fetch a resource.
+led to tightly coupled clients with hardcoded knowledged of how to
+construct the URL to fetch a resource.
 
-The approach has lead to tons of human readable documentations and
+This approach has lead to tons of human readable documentation and
 very brittle clients that break as soon as a URL's structure changes.
 
 ## Thinking with hypermedia
 
 Take yourself back to when you first started making websites.  Most of
-us had a plan. That plan was called a site map.
+us started with a plan and that plan was called a site map. We would
+follow a throught process for each site we built.
 
-We'd start at the homepage. Then we would think about how the user
-would navigate away from the index page.  Maybe they'd use the search
-engine using a *form*, or maybe they'd click on the latest article
-*link*, or maybe they will click on a category *link* to see the
+We would start at the homepage. Then we would think about how the user
+would navigate away from the homepage.  Maybe they would use the search
+engine using a **form**, or maybe they'd click on the latest article
+**link**, or maybe they would click on a category **link** to see the
 articles for that category.
 
-Hybermedia services are much like that. To build a hypermedia service,
-you must first think about where the client can go and where the client
-can navigate to.  In this blog post I'm going to walk you through a
-simple service I constructed using [hydra](http://www.hydra-cg.com/).
+Our site map might look something like this:
+
+![blog site map](/static/blog_site_map.png)
+
+Hypermedia services are much like this. The first step in designing a
+hypermedia service is to think about which resources a user agent can
+access and what links and forms a user agent can follow to reach
+other resources.
+
+In this blog post I'm going to walk you through a simple service I
+constructed using [hydra](http://www.hydra-cg.com/). Hydra uses links
+to URLs and templated URLs as forms to enable a user agent to
+access linked resources.
 
 # The service
 
 A while back I wrote a
-[CLI tool](https://github.com/ericmoritz/pitchfork-reviews) in Haskell
-to dump the latest reviews from [Pitchfork](http://pitchfork.com/) and
-filter them by score so I could skip all the bad albums and review
-higher scoring albums.  It was an exercise on how to do concurrency in
-Haskell by spidering the site and concurrently fetching the reviews.
+[CLI tool](https://github.com/ericmoritz/pitchfork-reviews) to dump
+the latest reviews from [Pitchfork](http://pitchfork.com/) and filter
+them by score so I could skip all the bad albums and jump straight to
+higher scoring albums.
 
 I have been playing with Spark for a project at work and as an
 exercise I [ported](https://github.com/ericmoritz/music-review-spider)
-that Haskell program to Spark.  Spark gave me a framework that does all the
-parallelization for me. All I had to think about was how to collect
-the URLs for spidering and then transform that HTML into usable data.
+that CLI program to Spark.
 
-Obviously I thought, "Hey, I've got the data, why don't I store it in a
-triplestore for ad-hoc querying".  So I did that and now a cronjob is
-fetching that data and stuffing it into a local
-[Fuseki](http://jena.apache.org/documentation/serving_data/) TDB
-database.
+Once I had some usable data, I thought "Why don't I store
+it in a database for ad-hoc querying". So I did that.
 
 Naturally my next thought was, "Why don't I put a web interface
-in front of this and use that instead of the CLI". So I did that.
+in front of this and use that instead of the CLI tool?".
+
 One thing led to another and I thought, "Why don't I create a
 microservice for this and get some practice with
 [React](http://facebook.github.io/react/) and [Hydra](http://www.hydra-cg.com/).
 
 ## Building the site map.
 
-So to start building any kind of hypermedia applications. Be it a
-website or a webservice; you should think about the site map and how
-resources are interconnected.
+Again, I can't stress this enough. When building any kind of
+hypermedia application (web site or web service) you should think
+about the site map and how resources are interconnected.
 
 I started with the thought that a user should have a queue of latest
 reviews. They should be able to mark any review as "seen" and that
 review will be removed from their queue and placed in a seen
 collection.
 
-With that simple interaction mode, we have the following resources: a
-`User/Queue`, a `User/Seen` and a `seenListForm` form for PUTing a
-`Review` in or DELETEing a `Review` from the `User/Seen`
-collection. The `seenListForm` links the `User/Queue` to the
-`User/Seen`.
+With that simple interaction model, we have the following resources: a
+`User/Queue` resource, and a `User/Seen` collection resource. We have a
+`seenItem` form for instructing the user agent on how to PUT a review
+into the `User/Seen` collection and how to DELETE a review from the
+`User/Seen` collection.
 
-So we have the basic interactions for a user, now we need to think
-about how the user gets to their queue from an index page.
+![blog site map](/static/music_review_site_map_simple.png)
+
+So we have the basic interactions for a user agent. Now we need to
+think about how the user agent gets to their user's queue from an
+index resource. The index resource serves as a single point of entry
+for a user agent.
 
 If we start from the `Index` resource, the user needs to login to get their
-`User` resource. Obviously we need an `loginForm`.  Once they are on the
-`User` resource, they can follow the `queue` or `seen` links to their
-`User/Queue` or `User/Seen` resources.
+`User` resource. Obviously we need an `loginForm` to link them to
+their `User` resource.
 
-Finally, I want to be able to query the `User/Queue` resource for
+Once they are on their `User` resource, they can follow the `queue` or
+`seen` links to their `User/Queue` or `User/Seen` resources.
+
+Finally, I want them to be able to query their `User/Queue` resource for
 reviews published after a date and/or reviews with a rating greater
-than a given rating. For this we have a `queueForm`.
+than a given rating. For this we have a `queueForm` property.
 
 So that's our completed site map:
 
-<!-- TODO: site map image -->
+![music review service site map](/static/music_review_site_map.png)
 
 I'll skip the nitty gritty of the
-https://github.com/ericmoritz/music-reviews-service and point you to
-the
+[music-reviews-service](https://github.com/ericmoritz/music-reviews-service)
+implementation and point you to the
 [mock service](https://raw.githubusercontent.com/ericmoritz/music-reviews-html5-client/master/mock_service/index.json)
 I wrote for the React client.
+
+If you look at that index page you will see the loginForm that allows
+the user agent to construct a link to a
+[user's User resource](https://raw.githubusercontent.com/ericmoritz/music-reviews-html5-client/master/mock_service/user.json).
+
 
 ```json
 {
   "@context": {...},
   "loginForm": {
     "@type": "hydra:IriTemplate",
-     "mapping": [
-       {
-         "property": "@id",
-         "variable": "user_uri",
-         "comment": "Login with a user's URI"
-       }
-     ],
-     "template": "/mock_service/user.json{?user_uri}"
-   }
+    "mapping": [
+      {
+        "property": "@id",
+        "variable": "user_uri",
+        "comment": "Login with a user's URI"
+      }
+    ],
+    "template": "/mock_service/user.json{?user_uri}"
+  }
 }
 ```
 
-If you look at that index page you will see the loginForm that allows
-the user agent to construct a link to a
-[user's resource](https://raw.githubusercontent.com/ericmoritz/music-reviews-html5-client/master/mock_service/user.json).
+In the
+[User resource](https://raw.githubusercontent.com/ericmoritz/music-reviews-html5-client/master/mock_service/user.json)
+You will see the
+[queue](https://raw.githubusercontent.com/ericmoritz/music-reviews-html5-client/master/mock_service/queue.json)
+and
+[seen](https://raw.githubusercontent.com/ericmoritz/music-reviews-html5-client/master/mock_service/seen.json)
+links.
+
 
 ```json
 {
@@ -125,13 +146,17 @@ the user agent to construct a link to a
   "seen": "/mock_service/seen.json"
 }
 ```
+
+
 In the
-[User resource](https://raw.githubusercontent.com/ericmoritz/music-reviews-html5-client/master/mock_service/user.json)
-You will see the
-[queue](https://raw.githubusercontent.com/ericmoritz/music-reviews-html5-client/master/mock_service/queue.json)
-and
-[seen](https://raw.githubusercontent.com/ericmoritz/music-reviews-html5-client/master/mock_service/seen.json)
-links.
+[User/Queue resource](https://raw.githubusercontent.com/ericmoritz/music-reviews-html5-client/master/mock_service/queue.json)
+you will see the `queueForm` form for querying the `User/Queue` members.
+
+I've embedded the `User` resource using the `user` link so that the
+`seen` and `queue` links are accessible from the `User/Queue` and
+`User/Seen` resources.
+
+Finally we have a `seenItem` form for instructing a user agent on how to build a URL for a `User/Seen/Item` resource and how to PUT a new `User/Seen/Item` in the `User/Seen` collection and how to DELETE a `User/Seen/Item` from the `User/Seen` collection.
 
 ```json
 {
@@ -143,40 +168,57 @@ links.
     "User/Queue"
   ],
   "member": [...],
-   "queueForm": {
-     "@type": "IriTemplate",
-     "mapping": [
-       {
-         "comment": "Restrict queue to items with a pub_date >= given pub_date",
-         "property": "datePublished",
-         "required": false,
-         "variable": "pub_date_gte"
-       },
-       {
-         "comment": "Restrict queue to items with a rating >= given normalizedScore",
-         "property": "normalizedScore",
-         "required": false,
-         "variable": "score_gte"
-       }
-     ],
-     "template": "/mock_service/queue.json{?pub_date_gte,score_gte}"
+  "queueForm": {
+    "@type": "IriTemplate",
+    "mapping": [
+      {
+        "comment": "Restrict queue to items with a pub_date >= given datePublished",
+        "property": "datePublished",
+        "required": false,
+        "variable": "pub_date_gte"
+      },
+      {
+        "comment": "Restrict queue to items with a rating >= given ratingValue",
+        "property": "ratingValue",
+        "required": false,
+        "variable": "score_gte"
+      }
+    ],
+    "template": "/mock_service/queue.json{?pub_date_gte,score_gte}"
+  },
+  "seenItem": {
+    "@type": "IriTemplate",
+    "mapping": [
+      {
+        "property": "review_id",
+        "required": true,
+        "variable": "review_id"
+      }
+    ],
+    "operation": [
+      {
+        "@type": "DeleteResourceOperation",
+        "comment": "If you delete a review into a user's seen collection, it adds it to their queue",
+        "method": "DELETE"
+      },
+      {
+        "@type": "CreateResourceOperation",
+        "comment": "If you put a review into a user's seen collection, it removes it from their queue",
+        "method": "PUT"
+      }
+    ],
+    "template": "/mock_service/seen/{review_id}"
   },
   "user": {
     "@id": "/mock_service/user.json",
-    "@type": [
-      "User"
-    ],
+    "@type": ["User"],
     "queue": "/mock_service/queue.json",
     "seen": "/mock_service/seen.json"
   }
 }
 ```
 
-In the
-[User/Queue resource](https://raw.githubusercontent.com/ericmoritz/music-reviews-html5-client/master/mock_service/queue.json)
-you will see the `queueForm` form and I've embedded the `User`
-resource using the `user` link so that the `seen` and `queue` links
-are accessible from the `User/Queue` and `User/Seen` resources.
+Finally the `User/Seen` resource which looks a lot like the `User/Queue` resource.
 
 ```json
 {
@@ -187,28 +229,15 @@ are accessible from the `User/Queue` and `User/Seen` resources.
     "ReviewList",
     "User/Seen"
   ],
-  "member": [...],
-  "user": {
-    "@id": "/mock_service/user.json",
-    "@type": [
-      "User"
-    ],
-    "queue": "/mock_service/queue.json",
-    "seen": "/mock_service/seen.json"
-  }
+  "member": [],
+  "seenItem": {...},
+  "user": {...}
 }
 ```
 
-Finally, the
-[User/Seen resource](https://raw.githubusercontent.com/ericmoritz/music-reviews-html5-client/master/mock_service/seen.json)
-excludes the `queueForm` because there is no reason to use a
-`queueForm` to add reviews to the queue (they're already there).
-
-To remove items from the `User/Seen` collection, you simply execute a
-DELETE request on the `Review`'s `@id`.
-
-As you can see we have a complete hypermedia service as described by
+As you can see we have a complete hypermedia service the follows the
 [WWW Application Domain Requirements](http://www.ics.uci.edu/~fielding/pubs/dissertation/web_arch_domain.htm#sec_4_1)
+and follows the semantics of our service.
 
 # The React Client
 
@@ -240,7 +269,7 @@ navigate(url) {
     },
     error: (xhr, status, err) => {
       this.setState({loading:false, data:{}}),
-      console.error(url, status, err.toString()) 
+      console.error(url, status, err.toString())
     }
   })
 },
@@ -261,16 +290,16 @@ componentDidMount() {
 }
 ```
 
-We use the `window.location.hash` to determine the URL to located the
+We use the `window.location.hash` to determine the URL of the
 JSON-LD for the current page.  This greatly simplifies the client
 because to navigate to a new resource, we simply set the
 `window.location.hash` to the link we're following.
 
-You will see in the [UserMenu](https://github.com/ericmoritz/music-reviews-html5-client/blob/master/src/music-reviews.js#L32) component, we're just using `a` tags to
+You will see in the [UserMenu](https://github.com/ericmoritz/music-reviews-html5-client/blob/master/src/music-reviews.js#L32) component, we're just using &lt;a&gt; tags to
 link to the `User/Seen` and `User/Queue` resources.
 
 Handling the `queueForm` and `loginForm` links are a little more
-complicated but still manageable.
+complicated but pretty trivial.
 
 I wrote a simple
 [iriTemplateRender()](https://github.com/ericmoritz/music-reviews-html5-client/blob/master/src/music-reviews.js#L18)
@@ -288,6 +317,11 @@ The most complex bit of the client comes in the `MusicReviewApp`'s
 
 Here we inspect the currently loaded root resource for available resources
 and links based on the vocabulary of the service.
+
+
+We attempt to locate a `User` resource either by seeing if the root
+resource is a `User` resource or if there is a `user` link on the root
+resource. Then we map that `User` resource to a `UserMenu` component.
 
 ```javascript
 render() {
@@ -308,13 +342,10 @@ render() {
   if(userObj) {
     userMenu = <UserMenu data={userObj} />
   }
-
 ```
 
-We attempt to locate a `User` resource either by seeing if the root
-resource is a `User` resource or if there is a `user` link on the root
-resource. The we map that `User` resource to a `UserMenu` component.
-
+Next we check if there is a loginForm link and map that to a LoginForm
+component.
 
 ```javascript
 
@@ -324,6 +355,11 @@ resource. The we map that `User` resource to a `UserMenu` component.
 
 ```
 
+Next we determine if the root resource is of type `ReviewList` (the
+superclass of `User/Queue` and `User/Seen` and map it to a
+`ReviewList` component if it is.
+
+
 ```javascript
 
   if(hasType(this.state.data, 'ReviewList')) {
@@ -331,9 +367,7 @@ resource. The we map that `User` resource to a `UserMenu` component.
   }
 ```
 
-Next we determine if the root resource is of type `ReviewList` (the
-superclass of `User/Queue` and `User/Seen` and map it to a
-`ReviewList` component if it is.
+Finally we just return the compontents we may have created.  JSX will simply ignore any undefined components.
 
 ```
   return (<bs.Panel bsStyle="primary">
@@ -350,6 +384,11 @@ superclass of `User/Queue` and `User/Seen` and map it to a
 
 Next it is the job of the `UserForm` and `ReviewList` components to
 render the `User` resource and `ReviewList` resources accordingly.
+
+
+Starting with the `UserForm` component, it simply constructs a form
+that will use `iriTemplateRender()` to construct a URL to navigate to
+`onSubmit`.
 
 ```javascript
 var LoginForm = React.createClass({
@@ -370,9 +409,11 @@ var LoginForm = React.createClass({
 });
 ```
 
-Starting with the `UserForm` component, it simply constructs a form
-that will use `iriTemplateRender()` to construct a URL to navigate to
-`onSubmit`.
+Next the `ReviewList` component maps its `member` proprety to `Review`
+components and detects if a `queueForm` is linked to the `ReviewList`
+resource. If a `queueForm` exists, it maps the `queueForm` to a
+QueueForm component.
+
 
 ```javascript
 
@@ -408,11 +449,6 @@ var ReviewList = React.createClass({
 });
 ```
 
-Next the `ReviewList` component maps its `member` proprety to `Review`
-components and detects if a `queueForm` is linked to the `ReviewList`
-resource. If a `queueForm` exists, it maps the `queueForm` to a
-QueueForm component.
-
 # Conclusion
 
 I hope that you noticed that by using JSON-LD, Linked Data, Links, and
@@ -429,5 +465,3 @@ interactivity.
 
 I am personally excited about the possibility of this way of building
 services.  I hope I got you excited as well.
-
-
