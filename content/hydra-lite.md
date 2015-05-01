@@ -48,7 +48,7 @@ detect linked resources (more on this below).
 
 ## Resource
 
-Lets start with what a resource is in hypermedia.  A
+Let us start with what a resource is in hypermedia.  A
 resource is simply an object with keys and values:
 
 ```js
