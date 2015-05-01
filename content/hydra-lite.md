@@ -174,7 +174,7 @@ This is often solved in an ad-hoc way like the following:
 }
 ```
 
-as often the case, different developers designed the schema of the
+As often the case, different developers designed the schema of the
 `BlogPost` class and the `Homepage` class in isolation and didn't
 coordinate their field names.
 
@@ -276,3 +276,4 @@ While I am not a member of the [Hydra W3C Community
 Group](http://www.hydra-cg.com/) I welcome any questions and
 suggestions from the Hydra-CG team on how to improve Hydra lite.
 
+[Discuss on Hacker News](https://news.ycombinator.com/item?id=9472031)
