@@ -1,0 +1,30 @@
+{
+  "@context": {
+    "@vocab": "http://schema.org/"
+  },
+  "people": [
+    {
+      "name": "Eric",
+      "@type": "Person",
+      "address": {
+        "@type": "Address",
+        "addressLocality": "Rockville",
+        "addressRegion": "Maryland"
+      },
+      "worksFor": {
+        "@type": "Organization",
+        "name": "Gannett",
+        "address": {
+          "@type": "Address",
+          "addressLocality": "Mclean",
+          "addressRegion": "Virginia"
+        }
+      }
+    },
+    {
+      "name": "Jane Doe",
+      "@type": "Person",
+      "address": null
+    }
+  ]
+}

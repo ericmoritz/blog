@@ -6,7 +6,7 @@ Unidecode==0.04.14
 blinker==1.3
 docutils==0.11
 feedgenerator==1.7
-pelican>=3.3
+pelican==3.3
 pytz==2014.2
 six==1.6.1
 wsgiref==0.1.2
